@@ -1,5 +1,6 @@
 package a.navigationcomponent;
 
+import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -8,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,6 +26,7 @@ public class SecondFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private OnFragmentInteractionListener mListener;
 
     public SecondFragment() {
         // Required empty public constructor
@@ -57,10 +60,42 @@ public class SecondFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+
+        TextView argText = getView().findViewById(R.id.argText);
+        SecondFragmentArgs args = SecondFragmentArgs.fromBundle(getArguments());
+        String message = args.getMessage();
+        argText.setText(message);
+    }
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.frag_second, container, false);
+    }
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
     }
 
     public interface OnFragmentInteractionListener {

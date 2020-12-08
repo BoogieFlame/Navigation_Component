@@ -1,17 +1,21 @@
 package a.navigationcomponent.ui.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import a.navigationcomponent.MainActivity;
 import a.navigationcomponent.R;
 
 public class MainFragment extends Fragment {
@@ -33,14 +37,22 @@ public class MainFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(MainViewModel.class);
-        Button button = getView().findViewById(R.id.button);
+
+        Button button = getView().findViewById(R.id.button1);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.mainToSecond);
+                EditText userText = getView().findViewById(R.id.UserText1);
+
+                MainFragmentDirections.MainToSecond action =
+                        MainFragmentDirections.mainToSecond();
+
+                action.setMessage(userText.getText().toString());
+                Navigation.findNavController(view).navigate(action);
+
             }
         });
+
     }
-
-
 }
